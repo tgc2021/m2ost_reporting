@@ -1,0 +1,206 @@
+<div class="login-web">
+    <div class="dropdown-container-box d-flex w-100 p-2 justify-content-center gap-3">
+        <div class="dropbox">
+            <!-- <button type="button" class="dropdown-btn custom-dropdown-button fontRoboto" data-bs-toggle="dropdown"
+                aria-expanded="false" (click)="getDepartment()">
+                {{ departmentValue}}
+                <i class="bi bi-caret-down-fill down-icon"></i>
+                <ul class="dropdown-menu dept-menu" id="dept">
+                    <li class="fontRoboto" *ngFor="let dept of department;let i=index" (click)="selectDepatment(dept)">
+                        {{dept.Department_name}}</li>
+                </ul>
+            </button> -->
+            <button type="button" class="dropdown-btn custom-dropdown-button fontRoboto" data-bs-toggle="dropdown"
+                aria-expanded="false" (click)="getDepartment()">
+                {{ departmentValue }}
+                <ng-container *ngIf="(selectedDepartmentValues?.length || 0) > 1">
+                    <span class="example-additional-selection fontRoboto">
+                        (+{{(selectedDepartmentValues.length || 0) - 1}} {{selectedDepartmentValues.length === 2 ? 'other' : 'others'}})
+                    </span>
+                </ng-container>
+                <i class="bi bi-caret-down-fill down-icon"></i>
+
+            </button>    
+                <ul class="dropdown-menu dept-menu" id="dept">
+                    <li class="fontRoboto" (click)="$event.stopPropagation()">
+                        <input type="checkbox" class="checkbox" [checked]="isAllDepartmentsSelected()"
+                            id="selectAllDepartments" (change)="toggleSelectAllDepartments($event)" />
+                        Select All
+                    </li>
+                    <li class="fontRoboto" *ngFor="let dept of department; let i = index"
+                        (click)="$event.stopPropagation()">
+                        <input type="checkbox" class="checkbox" [checked]="isDepartmentSelected(dept)"
+                            id="{{'dept-' + i}}" (change)="toggleDepartmentSelection(dept, $event)" />
+                        {{ dept.Department_name }}
+                    </li>
+                </ul>
+
+        </div>
+        <div class="dropbox">
+            <button type="button" class="dropdown-btn custom-dropdown-button fontRoboto" data-bs-toggle="dropdown"
+                [disabled]="departmentValue =='Select Department'" aria-expanded="false" (click)="getRoles()">
+            <div class="d-flex">
+                    <div class="ellipsis">
+                        {{ roleValue }}
+                        <ng-container *ngIf="(selectedValue?.length || 0) > 1">
+                            <span class="example-additional-selection fontRoboto">
+                                (+{{(selectedValue.length || 0) - 1}} {{selectedValue.length === 2 ? 'other' : 'others'}})
+                            </span>
+                        </ng-container>
+                       </div> 
+                       <div><i class="bi bi-caret-down-fill down-icon"></i></div>
+                </div>
+            </button>
+            <ul class="dropdown-menu role-menu" id="role">
+                <li class="fontRoboto" (click)="$event.stopPropagation()">
+                    <input type="checkbox" class="checkbox" [checked]="isAllSelected()" id="selectAll"
+                        (change)="toggleSelectAll($event)" />
+                    Select All
+                </li>
+                <li *ngFor="let role of roles; let i = index" class="fontRoboto" (click)="$event.stopPropagation()">
+                    <input type="checkbox" class="checkbox" [checked]="isSelected(role)" id="{{i}}"
+                        (change)="toggleRoleSelection(role, $event)" />
+                    {{role.Text}}
+                </li>
+            </ul>
+        </div>
+
+        <div class="dropbox">
+            <button type="button" class="dropdown-btn custom-dropdown-button fontRoboto" data-bs-toggle="dropdown"
+                aria-expanded="false">
+                {{monthvalue}}
+                <i class="bi bi-caret-down-fill down-icon"></i>
+                <ul class="dropdown-menu dept-menu">
+                    <li class="fontRoboto" *ngFor="let month of months;let i=index" (click)="selectMonth(month)">
+                        {{month.name}}</li>
+                </ul>
+            </button>
+        </div>
+
+        <div class="dropbox">
+            <button type="button" class=" dropdown-btn custom-dropdown-button fontRoboto" data-bs-toggle="dropdown"
+                aria-expanded="false" (click)="getAssessmentlist()">
+                <div class="d-flex">
+                    <div class="ellipsis">
+                        {{ assessmentValue }}
+                        <ng-container *ngIf="(selectedAssessmentValues?.length || 0) > 1">
+                            <span class="example-additional-selection fontRoboto">
+                                (+{{(selectedAssessmentValues.length || 0) - 1}} {{selectedAssessmentValues.length === 2 ? 'other' : 'others'}})
+                            </span>
+                        </ng-container>
+                       </div> 
+                       <div><i class="bi bi-caret-down-fill down-icon"></i></div>
+                </div>
+            </button>
+                <ul class="dropdown-menu dept-menu">
+                    <li class="fontRoboto">
+                        <input type="checkbox" class="checkbox" [checked]="isAllAssessmentsSelected()"
+                            (change)="toggleSelectAllAssessments($event)" /> Select All
+                    </li>
+                    <li class="fontRoboto" *ngFor="let ass of assessmentList; let i = index"
+                        (click)="$event.stopPropagation()">
+                        <input type="checkbox" class="checkbox" [checked]="isAssessmentSelected(ass)" id="{{i}}"
+                            (change)="toggleAssessmentSelection(ass, $event)" />
+                        {{ ass.Assessment_title }}
+                    </li>
+                </ul>
+        </div>
+
+
+    </div>
+    <div class="dropdown-container-box  d-flex w-100 pt-2 justify-content-center gap-3">
+        <!-- <mat-form-field class="example-full-width date-container">
+        <mat-label>Start Date</mat-label>
+        <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="startDatePicker"
+          (dateChange)="onStartDateSelected($event)">
+        <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+        <mat-datepicker #startDatePicker></mat-datepicker>
+      </mat-form-field>
+      
+      <mat-form-field class="example-full-width date-container">
+        <mat-label>End Date</mat-label>
+        <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="endDatePicker"
+          (dateChange)="onEndDateSelected($event)">
+        <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+        <mat-datepicker #endDatePicker></mat-datepicker>
+      </mat-form-field>
+   -->
+        <div class="buttons d-flex justify-content-start">
+            <button class="btn w-100 fontRoboto" type="submit" (click)="getMonthlyTopper()">SEARCH</button>
+        </div>
+        <div class="buttons d-flex justify-content-start">
+            <button class="btn w-100 fontRoboto" type="reset" (click)="reset()">RESET</button>
+        </div>
+    </div>
+
+    <div class="table-container px-2">
+        <div class="search-container py-2 d-flex justify-content-between">
+            <div class="fontRoboto login-label">
+                Monthly Topper Report
+            </div>
+            <div class="d-flex gap-3">
+                <div>
+                    <input class="search" matInput (keyup)="applyFilter($event)" placeholder="Search" #input>
+                </div>
+                <button class="fontRoboto exportExcelButton" type="" (click)="exportToExcel()">Export to Excel</button>
+            </div>
+        </div>
+
+        <div class="mat-elevation-z8">
+            <table mat-table [dataSource]="dataSource" matSort>
+                <!-- Serial Number Column -->
+                <ng-container matColumnDef="Userid">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header sticky> User ID </th>
+                    <td mat-cell *matCellDef="let element"> {{element.Userid}} </td>
+                </ng-container>
+
+                <!-- Assesment Name Column -->
+                <ng-container matColumnDef="FirstName">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header sticky>Name</th>
+                    <td mat-cell *matCellDef="let element"> {{element.FirstName}} </td>
+                </ng-container>
+
+                <!-- No of Question Column -->
+                <ng-container matColumnDef="Region">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header sticky> Region </th>
+                    <td mat-cell *matCellDef="let element"> {{element.Region}} </td>
+                </ng-container>
+
+                <!-- Date Column -->
+                <ng-container matColumnDef="Gender">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header sticky> Gender </th>
+                    <td mat-cell *matCellDef="let element"> {{element.Gender}} </td>
+                </ng-container>
+                <!-- status Column -->
+                <ng-container matColumnDef="Role">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header sticky> Role </th>
+                    <td mat-cell *matCellDef="let element">
+                        {{element.Role}}
+                    </td>
+                </ng-container>
+                <!-- Assign Column -->
+                <ng-container matColumnDef="StoreCode">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header sticky> Store Code </th>
+                    <td mat-cell *matCellDef="let element">
+                        {{element.StoreCode}}
+                    </td>
+                </ng-container>
+
+                <!-- Edit Column -->
+                <ng-container matColumnDef="City">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header sticky> City </th>
+                    <td mat-cell *matCellDef="let element">
+                        {{element.City}}
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+
+            <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
+                aria-label="Select page of periodic elements">
+            </mat-paginator>
+        </div>
+    </div>
+</div>

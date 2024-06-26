@@ -31,8 +31,8 @@ onSubmit() {
         console.log(res);
         this.logininfo=res;
         if (res) {
+          this.http.userinfo=res;
           localStorage.setItem('userinfo', JSON.stringify(this.logininfo));
-
           this._router.navigateByUrl('home');
         } else {
           // Handle the case where the response is false or null
